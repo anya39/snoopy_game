@@ -1,4 +1,5 @@
 import pygame
+import random
 
 #initalize pygame
 pygame.init()
@@ -7,7 +8,7 @@ pygame.init()
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Snoopy Game")
 
-#player, snoopy
+#load player
 player_image = pygame.image.load("snoopy_pumpkin.png")
 player_image = pygame.transform.smoothscale(player_image, (95,130))
 player_x = 350
@@ -17,7 +18,33 @@ player_y = 480
 player_x_change = 0
 player_y_change = 0
 
-#game loop, also keeps window open
+#load candies
+candy_images = [
+    pygame.image.load("candy_pumpkin.png"),
+    pygame.image.load("candycorn.png"),
+    pygame.image.load("lollipop.png")
+]
+#resizes them all to be the same size
+for i in range(len(candy_images)):
+    candy_images[i] = pygame.transform.scale(candy_images[i],(50,50))
+
+#chooses random coordinates and candy
+candies = []
+for candy_img in candy_images:
+    candies.append({
+        "image": candy_img,
+        "x": random.randint(0,750),
+        "y": random.randint(0,550)
+    })
+
+#sets up scoring
+score = 0
+font = pygame.font.Font (None, 40)
+
+#score label
+score_text = font.render(f"Score: {score}", True, "#FBF9F9")
+
+#main game loop, also keeps window open --------------------------------------------------------
 running = True
 while running:
     for event in pygame.event.get():

@@ -2,6 +2,8 @@
 import pygame
 import random
 
+running = True
+
 #initalize pygame
 pygame.init()
 
@@ -9,7 +11,37 @@ pygame.init()
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Snoopy Game")
 
-#load player
+#instruction screen
+show_instructions = True
+
+while show_instructions:
+    #lets you close window normally
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            show_instructions = False
+            running = False
+        #if space is pressed, start game
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                show_instructions = False
+    
+    screen.fill("#000000")
+
+    #text set up
+    font_large = pygame.font.Font(None, 50)
+    font_small = pygame.font.Font(None, 30)
+    #text
+    title_text = font_large.render("Snoopy Halloween Candy Hunt Game", True, "#FF8543" )
+    instructions = font_small.render("Use the arrow keys to move Snoopy\n " \
+    "To collect candy, move Snoopy so that his head is touching the candy\n" \
+    "Collect as many as you can in 10 seconds to earn points!\n" \
+    "Good luck! Press SPACE to begin!", True, "#FF8543")
+    screen.blit(title_text, (100, 150))
+    screen.blit(instructions, (200, 250))
+
+    pygame.display.update()
+
+#load player (Snoopy)
 player_image = pygame.image.load("snoopy_pumpkin.png")
 player_image = pygame.transform.smoothscale(player_image, (95,130))
 player_x = 350
@@ -35,18 +67,14 @@ for candy_img in candy_images:
     candies.append({
         "image": candy_img,
         "x": random.randint(0,750),
-        "y": random.randint(0,550)
+        "y": random.randint(0,520)
     })
 
-#sets up scoring
+#sets up scoring and score label font
 score = 0
 font = pygame.font.Font (None, 40)
 
-#score label
-score_text = font.render(f"Score: {score}", True, "#FBF9F9")
-
-#main game loop, also keeps window open --------------------------------------------------------
-running = True
+#main game loop--------------------------------------------------------
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -77,22 +105,25 @@ while running:
         player_y = -20
     elif player_y > 490:
         player_y = 490
-
+    
     #check for candy collisions 
     for candy in candies:
         if abs(player_x - candy["x"]) < 50 and abs(player_y - candy["y"]) < 50:
-            score+=1
             candy["x"] = random.randint(0,750)
-            candy["y"] = random.randint(0,550)
+            candy["y"] = random.randint(0,520)
+            score+=1
 
     #background
     screen.fill("#87CEEB")
 
-    #insert candies and player
+    #score label
+    score_text = font.render(f"Score: {score}", True, "#FBF9F9")
+
+    #insert candies, player, and score
     for candy in candies:
         screen.blit(candy["image"], (candy["x"], candy["y"]))
-    
     screen.blit(player_image, (player_x, player_y))
+    screen.blit(score_text, (10,10))
 
     #update player position
     player_x += player_x_change

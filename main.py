@@ -1,3 +1,4 @@
+#game setup----------------------------------------------------------------------------------------
 import pygame
 import random
 
@@ -50,7 +51,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
+    
     #check which keys have been pressed
     keys = pygame.key.get_pressed()
 
@@ -67,10 +68,6 @@ while running:
     if keys[pygame.K_DOWN]:
         player_y+=3
 
-    #update player position
-    player_x += player_x_change
-    player_y += player_y_change
-
     #keep player inside window bounds
     if player_x < -20:
         player_x = -20
@@ -81,7 +78,24 @@ while running:
     elif player_y > 490:
         player_y = 490
 
-    screen.blit(player_image, (player_x, player_y))
-    pygame.display.update()
-    
+    #check for candy collisions 
+    for candy in candies:
+        if abs(player_x - candy["x"]) < 50 and abs(player_y - candy["y"]) < 50:
+            score+=1
+            candy["x"] = random.randint(0,750)
+            candy["y"] = random.randint(0,550)
+
+    #background
     screen.fill("#87CEEB")
+
+    #insert candies and player
+    for candy in candies:
+        screen.blit(candy["image"], (candy["x"], candy["y"]))
+    
+    screen.blit(player_image, (player_x, player_y))
+
+    #update player position
+    player_x += player_x_change
+    player_y += player_y_change
+
+    pygame.display.update()

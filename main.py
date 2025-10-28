@@ -2,44 +2,12 @@
 import pygame
 import random
 
-running = True
-
 #initalize pygame
 pygame.init()
 
 #create screen, title, and background    (width, height)
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Snoopy Game")
-
-#instruction screen
-show_instructions = True
-
-while show_instructions:
-    #lets you close window normally
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            show_instructions = False
-            running = False
-        #if space is pressed, start game
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                show_instructions = False
-    
-    screen.fill("#000000")
-
-    #text set up
-    font_large = pygame.font.Font(None, 50)
-    font_small = pygame.font.Font(None, 30)
-    #text
-    title_text = font_large.render("Snoopy Halloween Candy Hunt Game", True, "#FF8543" )
-    instructions = font_small.render("Use the arrow keys to move Snoopy\n " \
-    "To collect candy, move Snoopy so that his head is touching the candy\n" \
-    "Collect as many as you can in 10 seconds to earn points!\n" \
-    "Good luck! Press SPACE to begin!", True, "#FF8543")
-    screen.blit(title_text, (100, 150))
-    screen.blit(instructions, (200, 250))
-
-    pygame.display.update()
 
 #load player (Snoopy)
 player_image = pygame.image.load("snoopy_pumpkin.png")
@@ -73,6 +41,49 @@ for candy_img in candy_images:
 #sets up scoring and score label font
 score = 0
 font = pygame.font.Font (None, 40)
+
+#instruction screen--------------------------------------------------------------------------------
+running = True
+show_instructions = True
+
+while show_instructions:
+    for event in pygame.event.get():
+        #lets you close window normally
+        if event.type == pygame.QUIT:
+            show_instructions = False
+            running = False
+        #if space is pressed, start game
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                show_instructions = False
+    
+    screen.fill("#000000")
+
+    #text set up
+    font_large = pygame.font.Font(None, 55)
+    font_small = pygame.font.Font(None, 35)
+
+    instructions = [
+        "Use the arrow keys to move Snoopy",
+        "Move Snoopy's head over candy to collect it and score points",
+        "Collect as many as you can in 10 seconds!",
+        "Good luck! Press SPACE to start!"
+    ]
+
+    #print title (centered)
+    title_surface = font_large.render("Snoopy Halloween Candy Hunt Game", True, "#FF8543" )
+    title_rect = title_surface.get_rect(center=(400, 85))
+    screen.blit(title_surface, title_rect)
+    
+    #print instructions (centered)
+    y=270
+    for i in instructions:
+        instruction_surface = font_small.render(i, True, "#FFC297")
+        instructions_rect = instruction_surface.get_rect(center=(400,y))
+        screen.blit(instruction_surface, instructions_rect)
+        y+=50
+
+    pygame.display.update()
 
 #main game loop--------------------------------------------------------
 while running:

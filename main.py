@@ -66,7 +66,7 @@ while show_instructions:
     instructions = [
         "Use the arrow keys to move Snoopy",
         "Move Snoopy's head over candy to collect it and score points",
-        "Collect as many as you can in 10 seconds!",
+        "Collect as many as you can in 15 seconds!",
         "Good luck! Press SPACE to start!"
     ]
 
@@ -85,12 +85,15 @@ while show_instructions:
 
     pygame.display.update()
 
-#main game loop--------------------------------------------------------
+#get current time in milliseconds
+start_time = pygame.time.get_ticks()
+
+#main game loop------------------------------------------------------------------------------------
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
+
     #check which keys have been pressed
     keys = pygame.key.get_pressed()
 
@@ -129,6 +132,14 @@ while running:
 
     #score label
     score_text = font.render(f"Score: {score}", True, "#FBF9F9")
+
+    #calculate remaining time
+    seconds_passed = (pygame.time.get_ticks()- start_time) / 1000 #converts to secs
+    time_left = max(0, 15-int(seconds_passed))
+
+    time_text = font.render(f"Time remaining: {time_left}", True, "#FF8A3C")
+    time_rect = time_text.get_rect(center=(400, 30))
+    screen.blit(time_text, time_rect)
 
     #insert candies, player, and score
     for candy in candies:

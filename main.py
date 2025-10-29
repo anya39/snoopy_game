@@ -1,3 +1,9 @@
+'''
+To add:
+-Screen that pops up after 15 secs is over
+-More decoration to welcome screen
+-High score?
+'''
 #game setup----------------------------------------------------------------------------------------
 import pygame
 import random
@@ -45,6 +51,7 @@ font = pygame.font.Font (None, 40)
 #instruction screen--------------------------------------------------------------------------------
 running = True
 show_instructions = True
+show_endscreen = False
 
 while show_instructions:
     for event in pygame.event.get():
@@ -88,11 +95,12 @@ while show_instructions:
 #get current time in milliseconds
 start_time = pygame.time.get_ticks()
 
-#main game loop------------------------------------------------------------------------------------
+#main game-----------------------------------------------------------------------------------------
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            show_endscreen = False
 
     #check which keys have been pressed
     keys = pygame.key.get_pressed()
@@ -137,9 +145,13 @@ while running:
     seconds_passed = (pygame.time.get_ticks()- start_time) / 1000 #converts to secs
     time_left = max(0, 15-int(seconds_passed))
 
+    #display remaining time
     time_text = font.render(f"Time remaining: {time_left}", True, "#FF8A3C")
     time_rect = time_text.get_rect(center=(400, 30))
     screen.blit(time_text, time_rect)
+    if time_left == 0:
+        running = False
+        show_endscreen = True
 
     #insert candies, player, and score
     for candy in candies:
@@ -150,5 +162,19 @@ while running:
     #update player position
     player_x += player_x_change
     player_y += player_y_change
+
+    pygame.display.update()
+
+while show_endscreen:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            show_endscreen = False 
+    
+    screen.fill("#FFAE75")
+
+    #print text (centered) 
+    game_over_text = font_large.render("Time's Up! Great Job!", True, "#000000" )
+    endtext_rect = game_over_text.get_rect(center=(400, 85))
+    screen.blit(game_over_text, endtext_rect)
 
     pygame.display.update()

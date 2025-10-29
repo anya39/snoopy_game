@@ -6,7 +6,6 @@ To add:
 #game setup----------------------------------------------------------------------------------------
 import pygame
 import random
-import os
 
 #initalize pygame
 pygame.init()
@@ -31,6 +30,7 @@ candy_images = [
     pygame.image.load("candycorn.png"),
     pygame.image.load("lollipop.png")
 ]
+
 #resizes them all to be the same size
 for i in range(len(candy_images)):
     candy_images[i] = pygame.transform.scale(candy_images[i],(50,50))
@@ -49,7 +49,7 @@ score = 0
 high_score = 0
 font = pygame.font.Font (None, 40)
 
-#game active loop----------------------------------------------------------------------------------
+#game active loop----------------------------------------------------------------------------------------------------------------
 game_active = True
 while game_active:
 
@@ -63,6 +63,7 @@ while game_active:
             #lets you close window normally
             if event.type == pygame.QUIT:
                 show_instructions = False
+                running = False
                 game_active = False
             #if space is pressed, start game
             if event.type == pygame.KEYDOWN:
@@ -71,14 +72,15 @@ while game_active:
         
         screen.fill("#000000")
 
-        #text set up
+        #text set up 
         font_large = pygame.font.Font(None, 55)
         font_small = pygame.font.Font(None, 35)
 
         instructions = [
             "Use the arrow keys to move Snoopy",
-            "Move Snoopy's head over candy to collect it and score points",
-            "Collect as many as you can in 15 seconds!",
+            "Touch candy with Snoopy's head to collect it and earn points",
+            "Grab as much candy as you can in 15 seconds!",
+            "",
             "Good luck! Press SPACE to start!"
         ]
 
@@ -144,14 +146,14 @@ while game_active:
         screen.fill("#87CEEB")
 
         #score label
-        score_text = font.render(f"Score: {score}", True, "#FBF9F9")
+        score_text = font.render(f"Score: {score}", True, "#000000")
 
         #calculate remaining time
         seconds_passed = (pygame.time.get_ticks()- start_time) / 1000 #converts to secs
         time_left = max(0, 15-int(seconds_passed))
 
         #display remaining time
-        time_text = font.render(f"Time remaining: {time_left}", True, "#FF8A3C")
+        time_text = font.render(f"Time remaining: {time_left}", True, "#D97431")
         time_rect = time_text.get_rect(center=(400, 30))
         screen.blit(time_text, time_rect)
         if time_left == 0:
@@ -160,7 +162,7 @@ while game_active:
 
         #display high score
         high_score_text = font_small.render(f"High Score: {high_score}", True, "#FFFFFF")
-        screen.blit(high_score_text, high_score_text.get_rect(center=(90, 575)))
+        screen.blit(high_score_text, high_score_text.get_rect(center=(90, 580)))
 
         #insert candies, player, and score
         for candy in candies:
@@ -200,9 +202,16 @@ while game_active:
         high_score_text2 = font_small.render(f"High Score: {high_score}", True, "#000000")
         play_again_text = font_small.render(f"Want to beat your high score? Press SPACE to play again!", True, "#000000")
         
-        screen.blit(game_over_text, game_over_text.get_rect(center=(400, 85)))
-        screen.blit(score_text, score_text.get_rect(center=(400,200)))
-        screen.blit(high_score_text2, high_score_text2.get_rect(center=(400,300)))
+        screen.blit(game_over_text, game_over_text.get_rect(center=(400, 180)))
+        screen.blit(score_text, score_text.get_rect(center=(400,270)))
+        screen.blit(high_score_text2, high_score_text2.get_rect(center=(400,420)))
         screen.blit(play_again_text, play_again_text.get_rect(center=(400,500)))
+
+        #end screen decorations
+        pumpkin_ghost = pygame.image.load("pumpkin_ghost.png")
+        pumpkin_ghost = pygame.transform.smoothscale(pumpkin_ghost, (700,200))
+
+        pumpkin_rect = pumpkin_ghost.get_rect(center=(400, 40))
+        screen.blit(pumpkin_ghost, pumpkin_rect)
 
         pygame.display.update()

@@ -1,6 +1,6 @@
 '''
 To add:
--Screen that pops up after 15 secs is over
+-More decoration and design to end screen
 -More decoration to welcome screen
 -High score?
 '''
@@ -48,133 +48,150 @@ for candy_img in candy_images:
 score = 0
 font = pygame.font.Font (None, 40)
 
-#instruction screen--------------------------------------------------------------------------------
-running = True
-show_instructions = True
-show_endscreen = False
+#game active loop----------------------------------------------------------------------------------
+game_active = True
+while game_active:
 
-while show_instructions:
-    for event in pygame.event.get():
-        #lets you close window normally
-        if event.type == pygame.QUIT:
-            show_instructions = False
-            running = False
-        #if space is pressed, start game
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+    #instruction screen----------------------------------------------------------------------------
+    running = True
+    show_instructions = True
+    show_endscreen = False
+
+    while show_instructions:
+        for event in pygame.event.get():
+            #lets you close window normally
+            if event.type == pygame.QUIT:
                 show_instructions = False
-    
-    screen.fill("#000000")
-
-    #text set up
-    font_large = pygame.font.Font(None, 55)
-    font_small = pygame.font.Font(None, 35)
-
-    instructions = [
-        "Use the arrow keys to move Snoopy",
-        "Move Snoopy's head over candy to collect it and score points",
-        "Collect as many as you can in 15 seconds!",
-        "Good luck! Press SPACE to start!"
-    ]
-
-    #print title (centered)
-    title_surface = font_large.render("Snoopy Halloween Candy Hunt Game", True, "#FF8543" )
-    title_rect = title_surface.get_rect(center=(400, 85))
-    screen.blit(title_surface, title_rect)
-    
-    #print instructions (centered)
-    y=270
-    for i in instructions:
-        instruction_surface = font_small.render(i, True, "#FFC297")
-        instructions_rect = instruction_surface.get_rect(center=(400,y))
-        screen.blit(instruction_surface, instructions_rect)
-        y+=50
-
-    pygame.display.update()
-
-#get current time in milliseconds
-start_time = pygame.time.get_ticks()
-
-#main game-----------------------------------------------------------------------------------------
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            show_endscreen = False
-
-    #check which keys have been pressed
-    keys = pygame.key.get_pressed()
-
-    #arrow key movement functionality when pressed
-    #horizontal movement
-    if keys[pygame.K_LEFT]:
-        player_x-=3
-    if keys[pygame.K_RIGHT]:
-        player_x+=3
+                game_active = False
+            #if space is pressed, start game
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    show_instructions = False
         
-    #vertical movement
-    if keys[pygame.K_UP]:
-        player_y-=3
-    if keys[pygame.K_DOWN]:
-        player_y+=3
+        screen.fill("#000000")
 
-    #keep player inside window bounds
-    if player_x < -20:
-        player_x = -20
-    elif player_x > 720:
-        player_x = 720
-    if player_y < -20:
-        player_y = -20
-    elif player_y > 490:
-        player_y = 490
-    
-    #check for candy collisions 
-    for candy in candies:
-        if abs(player_x - candy["x"]) < 50 and abs(player_y - candy["y"]) < 50:
-            candy["x"] = random.randint(0,750)
-            candy["y"] = random.randint(0,520)
-            score+=1
+        #text set up
+        font_large = pygame.font.Font(None, 55)
+        font_small = pygame.font.Font(None, 35)
 
-    #background
-    screen.fill("#87CEEB")
+        instructions = [
+            "Use the arrow keys to move Snoopy",
+            "Move Snoopy's head over candy to collect it and score points",
+            "Collect as many as you can in 15 seconds!",
+            "Good luck! Press SPACE to start!"
+        ]
 
-    #score label
-    score_text = font.render(f"Score: {score}", True, "#FBF9F9")
+        #print title (centered)
+        title_surface = font_large.render("Snoopy Halloween Candy Hunt Game", True, "#FF8543" )
+        title_rect = title_surface.get_rect(center=(400, 85))
+        screen.blit(title_surface, title_rect)
+        
+        #print instructions (centered)
+        y=270
+        for i in instructions:
+            instruction_surface = font_small.render(i, True, "#FFC297")
+            instructions_rect = instruction_surface.get_rect(center=(400,y))
+            screen.blit(instruction_surface, instructions_rect)
+            y+=50
 
-    #calculate remaining time
-    seconds_passed = (pygame.time.get_ticks()- start_time) / 1000 #converts to secs
-    time_left = max(0, 15-int(seconds_passed))
+        pygame.display.update()
 
-    #display remaining time
-    time_text = font.render(f"Time remaining: {time_left}", True, "#FF8A3C")
-    time_rect = time_text.get_rect(center=(400, 30))
-    screen.blit(time_text, time_rect)
-    if time_left == 0:
-        running = False
-        show_endscreen = True
+    #get current time in milliseconds
+    start_time = pygame.time.get_ticks()
 
-    #insert candies, player, and score
-    for candy in candies:
-        screen.blit(candy["image"], (candy["x"], candy["y"]))
-    screen.blit(player_image, (player_x, player_y))
-    screen.blit(score_text, (10,10))
+    #main game-------------------------------------------------------------------------------------
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                game_active = False
 
-    #update player position
-    player_x += player_x_change
-    player_y += player_y_change
+        #check which keys have been pressed
+        keys = pygame.key.get_pressed()
 
-    pygame.display.update()
+        #arrow key movement functionality when pressed
+        #horizontal movement
+        if keys[pygame.K_LEFT]:
+            player_x-=3
+        if keys[pygame.K_RIGHT]:
+            player_x+=3
+            
+        #vertical movement
+        if keys[pygame.K_UP]:
+            player_y-=3
+        if keys[pygame.K_DOWN]:
+            player_y+=3
 
-while show_endscreen:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            show_endscreen = False 
-    
-    screen.fill("#FFAE75")
+        #keep player inside window bounds
+        if player_x < -20:
+            player_x = -20
+        elif player_x > 720:
+            player_x = 720
+        if player_y < -20:
+            player_y = -20
+        elif player_y > 490:
+            player_y = 490
+        
+        #check for candy collisions 
+        for candy in candies:
+            if abs(player_x - candy["x"]) < 50 and abs(player_y - candy["y"]) < 50:
+                candy["x"] = random.randint(0,750)
+                candy["y"] = random.randint(0,520)
+                score+=1
 
-    #print text (centered) 
-    game_over_text = font_large.render("Time's Up! Great Job!", True, "#000000" )
-    endtext_rect = game_over_text.get_rect(center=(400, 85))
-    screen.blit(game_over_text, endtext_rect)
+        #background
+        screen.fill("#87CEEB")
 
-    pygame.display.update()
+        #score label
+        score_text = font.render(f"Score: {score}", True, "#FBF9F9")
+
+        #calculate remaining time
+        seconds_passed = (pygame.time.get_ticks()- start_time) / 1000 #converts to secs
+        time_left = max(0, 15-int(seconds_passed))
+
+        #display remaining time
+        time_text = font.render(f"Time remaining: {time_left}", True, "#FF8A3C")
+        time_rect = time_text.get_rect(center=(400, 30))
+        screen.blit(time_text, time_rect)
+        if time_left == 0:
+            running = False
+            show_endscreen = True
+
+        #insert candies, player, and score
+        for candy in candies:
+            screen.blit(candy["image"], (candy["x"], candy["y"]))
+        screen.blit(player_image, (player_x, player_y))
+        screen.blit(score_text, (10,10))
+
+        #update player position
+        player_x += player_x_change
+        player_y += player_y_change
+
+        pygame.display.update()
+
+    #end screen------------------------------------------------------------------------------------
+    while show_endscreen:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                show_endscreen = False 
+                game_active = False
+            elif event.type == pygame.KEYDOWN:
+                #restart the game
+                if event.key == pygame.K_SPACE:
+                    score = 0
+                    player_x, player_y = 350, 480
+                    start_time = pygame.time.get_ticks()
+                    show_endscreen = False
+        
+        screen.fill("#FFAE75")
+
+        #print text (centered)
+        game_over_text = font_large.render("Time's Up! Great Job!", True, "#000000" )
+        score_text = font_small.render(f"Final Score: {score}", True, "#000000" )
+        play_again_text = font_small.render(f"Want to beat your high score? Press SPACE to play again!", True, "#000000")
+        
+        screen.blit(game_over_text, game_over_text.get_rect(center=(400, 85)))
+        screen.blit(score_text, score_text.get_rect(center=(400,200)))
+        screen.blit(play_again_text, play_again_text.get_rect(center=(400,400)))
+
+        pygame.display.update()

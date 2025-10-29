@@ -2,18 +2,18 @@
 To add:
 -More decoration and design to end screen
 -More decoration to welcome screen
--High score?
 '''
 #game setup----------------------------------------------------------------------------------------
 import pygame
 import random
+import os
 
 #initalize pygame
 pygame.init()
 
 #create screen, title, and background    (width, height)
 screen = pygame.display.set_mode((800,600))
-pygame.display.set_caption("Snoopy Game")
+pygame.display.set_caption("Snoopy Candy Hunt Game")
 
 #load player (Snoopy)
 player_image = pygame.image.load("snoopy_pumpkin.png")
@@ -46,6 +46,7 @@ for candy_img in candy_images:
 
 #sets up scoring and score label font
 score = 0
+high_score = 0
 font = pygame.font.Font (None, 40)
 
 #game active loop----------------------------------------------------------------------------------
@@ -157,6 +158,10 @@ while game_active:
             running = False
             show_endscreen = True
 
+        #display high score
+        high_score_text = font_small.render(f"High Score: {high_score}", True, "#FFFFFF")
+        screen.blit(high_score_text, high_score_text.get_rect(center=(90, 575)))
+
         #insert candies, player, and score
         for candy in candies:
             screen.blit(candy["image"], (candy["x"], candy["y"]))
@@ -185,13 +190,19 @@ while game_active:
         
         screen.fill("#FFAE75")
 
+        #high score
+        if score > high_score:
+            high_score = score
+
         #print text (centered)
         game_over_text = font_large.render("Time's Up! Great Job!", True, "#000000" )
         score_text = font_small.render(f"Final Score: {score}", True, "#000000" )
+        high_score_text2 = font_small.render(f"High Score: {high_score}", True, "#000000")
         play_again_text = font_small.render(f"Want to beat your high score? Press SPACE to play again!", True, "#000000")
         
         screen.blit(game_over_text, game_over_text.get_rect(center=(400, 85)))
         screen.blit(score_text, score_text.get_rect(center=(400,200)))
-        screen.blit(play_again_text, play_again_text.get_rect(center=(400,400)))
+        screen.blit(high_score_text2, high_score_text2.get_rect(center=(400,300)))
+        screen.blit(play_again_text, play_again_text.get_rect(center=(400,500)))
 
         pygame.display.update()

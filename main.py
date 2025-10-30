@@ -20,10 +20,6 @@ player_image = pygame.transform.smoothscale(player_image, (95,130))
 player_x = 350
 player_y = 480
 
-#player movement variables
-player_x_change = 0
-player_y_change = 0
-
 #load candies
 candy_images = [
     pygame.image.load("candy_pumpkin.png"),
@@ -33,7 +29,7 @@ candy_images = [
 
 #resizes them all to be the same size
 for i in range(len(candy_images)):
-    candy_images[i] = pygame.transform.scale(candy_images[i],(50,50))
+    candy_images[i] = pygame.transform.scale(candy_images[i],(55,55))
 
 #chooses random coordinates and candy
 candies = []
@@ -48,6 +44,14 @@ for candy_img in candy_images:
 score = 0
 high_score = 0
 font = pygame.font.Font (None, 40)
+
+#instruction screen and end page decorations (loades them in)
+broom_snoopy = pygame.image.load("snoopy_on_broom.png")
+broom_snoopy = pygame.transform.smoothscale(broom_snoopy, (400,400))
+
+pumpkin_ghost = pygame.image.load("pumpkin_ghost.png")
+pumpkin_ghost = pygame.transform.smoothscale(pumpkin_ghost, (700,200))
+
 
 #game active loop----------------------------------------------------------------------------------------------------------------
 game_active = True
@@ -90,12 +94,16 @@ while game_active:
         screen.blit(title_surface, title_rect)
         
         #print instructions (centered)
-        y=270
+        y=190
         for i in instructions:
             instruction_surface = font_small.render(i, True, "#FFC297")
             instructions_rect = instruction_surface.get_rect(center=(400,y))
             screen.blit(instruction_surface, instructions_rect)
             y+=50
+
+        #add image of snoopy on broom
+        broom_rect = broom_snoopy.get_rect(center=(115, 490))
+        screen.blit(broom_snoopy, broom_rect)
 
         pygame.display.update()
 
@@ -146,7 +154,7 @@ while game_active:
         screen.fill("#87CEEB")
 
         #score label
-        score_text = font.render(f"Score: {score}", True, "#000000")
+        score_text = font.render(f"Score: {score}", True, "#D97431")
 
         #calculate remaining time
         seconds_passed = (pygame.time.get_ticks()- start_time) / 1000 #converts to secs
@@ -161,7 +169,7 @@ while game_active:
             show_endscreen = True
 
         #display high score
-        high_score_text = font_small.render(f"High Score: {high_score}", True, "#FFFFFF")
+        high_score_text = font_small.render(f"High Score: {high_score}", True, "#D97431")
         screen.blit(high_score_text, high_score_text.get_rect(center=(90, 580)))
 
         #insert candies, player, and score
@@ -169,11 +177,7 @@ while game_active:
             screen.blit(candy["image"], (candy["x"], candy["y"]))
         screen.blit(player_image, (player_x, player_y))
         screen.blit(score_text, (10,10))
-
-        #update player position
-        player_x += player_x_change
-        player_y += player_y_change
-
+       
         pygame.display.update()
 
     #end screen------------------------------------------------------------------------------------
@@ -197,7 +201,7 @@ while game_active:
             high_score = score
 
         #print text (centered)
-        game_over_text = font_large.render("Time's Up! Great Job!", True, "#000000" )
+        game_over_text = font_large.render("Time's Up! Great Job :)", True, "#000000" )
         score_text = font_small.render(f"Final Score: {score}", True, "#000000" )
         high_score_text2 = font_small.render(f"High Score: {high_score}", True, "#000000")
         play_again_text = font_small.render(f"Want to beat your high score? Press SPACE to play again!", True, "#000000")
@@ -208,9 +212,6 @@ while game_active:
         screen.blit(play_again_text, play_again_text.get_rect(center=(400,500)))
 
         #end screen decorations
-        pumpkin_ghost = pygame.image.load("pumpkin_ghost.png")
-        pumpkin_ghost = pygame.transform.smoothscale(pumpkin_ghost, (700,200))
-
         pumpkin_rect = pumpkin_ghost.get_rect(center=(400, 40))
         screen.blit(pumpkin_ghost, pumpkin_rect)
 

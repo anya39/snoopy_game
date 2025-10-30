@@ -44,8 +44,14 @@ font = pygame.font.Font (None, 40)
 broom_snoopy = pygame.image.load("snoopy_on_broom.png")
 broom_snoopy = pygame.transform.smoothscale(broom_snoopy, (400,400))
 
+orange_pumpkin = pygame.image.load("orange_pumpkin.png")
+orange_pumpkin = pygame.transform.smoothscale(orange_pumpkin, (150,150))
+
 pumpkin_ghost = pygame.image.load("pumpkin_ghost.png")
 pumpkin_ghost = pygame.transform.smoothscale(pumpkin_ghost, (700,200))
+
+candy_bucket = pygame.image.load("candy_bucket.png")
+candy_bucket = pygame.transform.smoothscale(candy_bucket, (160,160))
 
 
 #game active loop----------------------------------------------------------------------------------------------------------------
@@ -96,9 +102,12 @@ while game_active:
             screen.blit(instruction_surface, instructions_rect)
             y+=50
 
-        #add image of snoopy on broom
+        #add image of snoopy on broom and orange pumpkin
         broom_rect = broom_snoopy.get_rect(center=(115, 490))
         screen.blit(broom_snoopy, broom_rect)
+
+        pumpkin_rect = orange_pumpkin.get_rect(center=(700,527))
+        screen.blit(orange_pumpkin, pumpkin_rect)
 
         pygame.display.update()
 
@@ -204,17 +213,19 @@ while game_active:
         play_again_text = font_small.render(f"Want to beat your high score? Press SPACE to play again!", True, "#000000")
         
         screen.blit(game_over_text, game_over_text.get_rect(center=(400, 180)))
-        screen.blit(score_text, score_text.get_rect(center=(400,270)))
-        screen.blit(high_score_text2, high_score_text2.get_rect(center=(400,420)))
-        screen.blit(play_again_text, play_again_text.get_rect(center=(400,500)))
+        screen.blit(score_text, score_text.get_rect(center=(400,280)))
+        screen.blit(high_score_text2, high_score_text2.get_rect(center=(400,400)))
+        screen.blit(play_again_text, play_again_text.get_rect(center=(400,460)))
 
         if new_high_score:
             celebration_text = font_large.render("NEW HIGH SCORE!!!", True, "#FFFFFF")
             screen.blit(celebration_text, celebration_text.get_rect(center=(400, 230)) )
 
-
         #end screen decorations
         pumpkin_rect = pumpkin_ghost.get_rect(center=(400, 40))
         screen.blit(pumpkin_ghost, pumpkin_rect)
+
+        bucket_rect = candy_bucket.get_rect(center=(70,545))
+        screen.blit(candy_bucket, bucket_rect)
 
         pygame.display.update()

@@ -30,7 +30,7 @@ for i in range(len(candy_images)):
 
 m_m_candy = pygame.transform.scale(m_m_candy, (65, 65))
 
-#chooses random coordinates and candy
+#chooses random coordinates for each candy
 candies = []
 for candy_img in candy_images:
     candies.append({
@@ -39,15 +39,16 @@ for candy_img in candy_images:
         "y": random.randint(0,520)
     })
 
-m_m = {
-    "image": m_m_candy,
-    "x": random.randint(0,750),
-    "y": random.randint(0,520),
-    #drifting
-    "dx": random.choice([-2,-1,0,1,2]),
-    "dy": random.choice([-2,-1,0,1,2])
-}
-
+#chooses random m&m's coordinates and sets speed
+    m_m = {
+        "image": m_m_candy,
+        "x": random.randint(0,750),
+        "y": random.randint(0,520),
+        #drifting
+        "dx": (-3),
+        "dy": (3)
+    }
+    
 #sets up scoring and score label font
 score = 0
 high_score = 0
@@ -165,7 +166,7 @@ while game_active:
             player_y = -20
         elif player_y > 490:
             player_y = 490
-        
+
         #check for candy collisions 
         for candy in candies:
             if abs(player_x - candy["x"]) < 50 and abs(player_y - candy["y"]) < 50:

@@ -22,9 +22,13 @@ candy_images = [
     pygame.image.load("lollipop.png")
 ]
 
-#resizes them all to be the same size
+m_m_candy = pygame.image.load("m&m's.png")
+
+#resizes candy
 for i in range(len(candy_images)):
     candy_images[i] = pygame.transform.scale(candy_images[i],(55,55))
+
+m_m_candy = pygame.transform.scale(m_m_candy, (65, 65))
 
 #chooses random coordinates and candy
 candies = []
@@ -34,6 +38,12 @@ for candy_img in candy_images:
         "x": random.randint(0,750),
         "y": random.randint(0,520)
     })
+
+m_m = {
+    "image": m_m_candy,
+    "x": random.randint(0,750),
+    "y": random.randint(0,520),
+}
 
 #sets up scoring and score label font
 score = 0
@@ -154,6 +164,12 @@ while game_active:
                 candy["y"] = random.randint(0,520)
                 score+=1
 
+        #check for m&m collision
+        if abs(player_x - m_m["x"]) < 50 and abs(player_y - m_m["y"]) < 50:
+            m_m["x"] = random.randint(0,750)
+            m_m["y"] = random.randint(0,520)
+            score+=2
+
         #background
         screen.fill("#87CEEB")
 
@@ -179,6 +195,7 @@ while game_active:
         #insert candies, player, and score
         for candy in candies:
             screen.blit(candy["image"], (candy["x"], candy["y"]))
+        screen.blit(m_m["image"], (m_m["x"], m_m["y"]))
         screen.blit(player_image, (player_x, player_y))
         screen.blit(score_text, (10,10))
        
@@ -202,7 +219,7 @@ while game_active:
 
         #high score
         new_high_score = False
-        if score >= high_score:
+        if score > high_score:
             high_score = score
             new_high_score = True
 

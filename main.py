@@ -43,6 +43,9 @@ m_m = {
     "image": m_m_candy,
     "x": random.randint(0,750),
     "y": random.randint(0,520),
+    #drifting
+    "dx": random.choice([-2,-1,0,1,2]),
+    "dy": random.choice([-2,-1,0,1,2])
 }
 
 #sets up scoring and score label font
@@ -90,13 +93,14 @@ while game_active:
         #text set up 
         font_large = pygame.font.Font(None, 55)
         font_small = pygame.font.Font(None, 35)
+        font_xs = pygame.font.Font(None, 22)
 
         instructions = [
             "Use the arrow keys to move Snoopy",
             "Touch candy with Snoopy's head to collect it and earn points",
             "Grab as much candy as you can in 15 seconds!",
             "",
-            "Good luck! Press SPACE to start!"
+            "Good luck! Press SPACE to start!",
         ]
 
         #print title (centered)
@@ -111,6 +115,11 @@ while game_active:
             instructions_rect = instruction_surface.get_rect(center=(400,y))
             screen.blit(instruction_surface, instructions_rect)
             y+=50
+
+        #print tip about double points
+        tip = font_xs.render("tip: moving candy (m&m's) are worth double points!", True, "#FF8543")
+        tip_rect = tip.get_rect(center=(400, 500))
+        screen.blit(tip, tip_rect)
 
         #add image of snoopy on broom and orange pumpkin
         broom_rect = broom_snoopy.get_rect(center=(115, 490))
@@ -163,6 +172,16 @@ while game_active:
                 candy["x"] = random.randint(0,750)
                 candy["y"] = random.randint(0,520)
                 score+=1
+
+        #move m&m
+        m_m["x"] += m_m["dx"]
+        m_m["y"] += m_m["dy"]
+
+        #bounce m&m off edges so it stays on screen
+        if m_m["x"] < 0 or m_m["x"] > 750:
+            m_m["dx"] *= -1
+        if m_m["y"] < 0 or m_m["y"] > 520:
+            m_m["dy"] *= -1
 
         #check for m&m collision
         if abs(player_x - m_m["x"]) < 50 and abs(player_y - m_m["y"]) < 50:

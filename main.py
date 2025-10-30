@@ -1,8 +1,3 @@
-'''
-To add:
--More decoration and design to end screen
--More decoration to welcome screen
-'''
 #game setup----------------------------------------------------------------------------------------
 import pygame
 import random
@@ -197,8 +192,10 @@ while game_active:
         screen.fill("#FFAE75")
 
         #high score
-        if score > high_score:
+        new_high_score = False
+        if score >= high_score:
             high_score = score
+            new_high_score = True
 
         #print text (centered)
         game_over_text = font_large.render("Time's Up! Great Job :)", True, "#000000" )
@@ -210,6 +207,11 @@ while game_active:
         screen.blit(score_text, score_text.get_rect(center=(400,270)))
         screen.blit(high_score_text2, high_score_text2.get_rect(center=(400,420)))
         screen.blit(play_again_text, play_again_text.get_rect(center=(400,500)))
+
+        if new_high_score:
+            celebration_text = font_large.render("NEW HIGH SCORE!!!", True, "#FFFFFF")
+            screen.blit(celebration_text, celebration_text.get_rect(center=(400, 230)) )
+
 
         #end screen decorations
         pumpkin_rect = pumpkin_ghost.get_rect(center=(400, 40))

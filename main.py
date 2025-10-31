@@ -1,7 +1,17 @@
 #game setup----------------------------------------------------------------------------------------
 import pygame
 import random
+#for playable url----------------
+import sys, os
 
+def resource_path(relative_path):
+    """Get absolute path to resource, works for dev and PyInstaller"""
+    try:
+        base_path = sys._MEIPASS  # Temp folder created by PyInstaller
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+#--------------------------------
 #initalize pygame
 pygame.init()
 
@@ -10,19 +20,19 @@ screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Snoopy Candy Hunt Game")
 
 #load player (Snoopy)
-player_image = pygame.image.load("snoopy_pumpkin.png")
+player_image = pygame.image.load(resource_path("snoopy_pumpkin.png"))
 player_image = pygame.transform.smoothscale(player_image, (95,130))
 player_x = 350
 player_y = 480
 
 #load candies
 candy_images = [
-    pygame.image.load("candy_pumpkin.png"),
-    pygame.image.load("candycorn.png"),
-    pygame.image.load("lollipop.png")
+    pygame.image.load(resource_path("candy_pumpkin.png")),
+    pygame.image.load(resource_path("candycorn.png")),
+    pygame.image.load(resource_path("lollipop.png"))
 ]
 
-m_m_candy = pygame.image.load("m&m's.png")
+m_m_candy = pygame.image.load(resource_path("m&m's.png"))
 
 #resizes candy
 for i in range(len(candy_images)):
@@ -55,16 +65,16 @@ high_score = 0
 font = pygame.font.Font (None, 40)
 
 #instruction screen and end page decorations (loades them in)
-broom_snoopy = pygame.image.load("snoopy_on_broom.png")
+broom_snoopy = pygame.image.load(resource_path("snoopy_on_broom.png"))
 broom_snoopy = pygame.transform.smoothscale(broom_snoopy, (400,400))
 
-orange_pumpkin = pygame.image.load("orange_pumpkin.png")
+orange_pumpkin = pygame.image.load(resource_path("orange_pumpkin.png"))
 orange_pumpkin = pygame.transform.smoothscale(orange_pumpkin, (150,150))
 
-pumpkin_ghost = pygame.image.load("pumpkin_ghost.png")
+pumpkin_ghost = pygame.image.load(resource_path("pumpkin_ghost.png"))
 pumpkin_ghost = pygame.transform.smoothscale(pumpkin_ghost, (700,200))
 
-candy_bucket = pygame.image.load("candy_bucket.png")
+candy_bucket = pygame.image.load(resource_path("candy_bucket.png"))
 candy_bucket = pygame.transform.smoothscale(candy_bucket, (160,160))
 
 

@@ -1,10 +1,10 @@
 # snoopy_game
-This project is a Snoopy and Halloween themed candy hunt game. The player can make Snoopy move by using the arrow keys. The player has to collect candy to gain points and try to reach a new high score each round. The moving candy is worth 2 points while the still ones are worth only 1.
+This project is a Snoopy and Halloween-themed candy hunt game. The player can make Snoopy move by using the arrow keys. The player has to collect candy to gain points and try to reach a new high score each round. The moving candy is worth 2 points, while the still ones are worth only 1.
 
-This was my first time making a game using the pygame library. I enjoyed trying something new, getting to be more creative, and playing around with the visuals. I had to do a lot of research as I coded to learn everything I that needed, answer my questions, and debug. I had some trouble at times with debugging but after a lot of trial and error figured it all out. 
+This was my first time making a game using the pygame library. I enjoyed trying something new, getting to be more creative, and playing around with the visuals. I had to do a lot of research as I coded to learn everything I needed, answer my questions, and debug. I had some trouble at times with debugging, but after a lot of trial and error figured it all out. 
 
 
-For all of the added in images, I used ones found online. Here are all of the sources:
+For all of the added images, I used ones found online. Here are all of the sources:
 
 Candy corn:
 https://pngtree.com/freepng/cartoon-style-halloween-candy-elements_5549347.html 
